@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Authorization callback — System Automatize TikTok</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main>
+  <h1>Authorization received</h1>
+  <p>This page only displays the authorization code returned by TikTok so the account owner can copy it into their private, self-hosted tool. Nothing is sent, stored or tracked by this page.</p>
+  <p><strong>Code:</strong></p>
+  <pre id="code" style="white-space:pre-wrap;word-break:break-all;padding:12px;border:1px solid #ccc;border-radius:6px">—</pre>
+  <p><button id="copy" type="button">Copy code</button> <span id="state"></span></p>
+  <p><a href="index.html">Home</a> · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Service</a></p>
+</main>
+<script>
+  var p = new URLSearchParams(location.search);
+  var c = p.get('auth_code') || p.get('code');
+  var err = p.get('error') || p.get('error_description');
+  document.getElementById('code').textContent = c ? c : (err ? 'Error: ' + err : 'No code in the URL.');
+  document.getElementById('copy').onclick = function () {
+    if (!c) return;
+    navigator.clipboard.writeText(c).then(function () { document.getElementById('state').textContent = 'Copied.'; });
+  };
+</script>
+</body>
+</html>
